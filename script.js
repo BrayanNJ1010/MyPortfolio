@@ -101,3 +101,49 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+// 7. Form Handling & Success Modal
+const contactForm = document.getElementById('contact-form');
+const successModal = document.getElementById('success-modal');
+
+if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(contactForm);
+        const submitBtn = contactForm.querySelector('button');
+        const originalBtnText = submitBtn.innerText;
+        
+        // Show loading state
+        submitBtn.innerText = 'Enviando...';
+        submitBtn.disabled = true;
+
+        fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            body: formData
+        })
+        .then(async (response) => {
+            if (response.status == 200) {
+                // Success
+                successModal.classList.add('active');
+                contactForm.reset();
+            } else {
+                // Error
+                console.log(response);
+                alert('Ocurrió un error. Por favor intenta de nuevo.');
+            }
+        })
+        .catch(error => {
+            console.log(error);
+            alert('Error de conexión. Intenta más tarde.');
+        })
+        .finally(() => {
+            submitBtn.innerText = originalBtnText;
+            submitBtn.disabled = false;
+        });
+    });
+}
+
+function closeModal() {
+    successModal.classList.remove('active');
+}
