@@ -1,0 +1,5 @@
+node_modules/
+.DS_Store
+*.apk
+# Opcional: Si no quieres subir los APKs a GitHub por peso, puedes ignorarlos
+# Pero si quieres que Netlify los sirva, déjalos.
